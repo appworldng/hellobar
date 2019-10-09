@@ -48,10 +48,10 @@ class wpPopups {
 	 */
     public static function registerMenu() {
         add_menu_page(
-            'Post Types', 
-            'Post Types', 
+            'Pop Ups', 
+            'Pop Ups', 
             'manage_options', 
-            'Post Types', 
+            'Pop Ups', 
             array(get_called_class(), 'registerHTML')
         );
     }
@@ -86,11 +86,11 @@ class wpPopups {
 	 */
     public static function postTypeInit() {
         $labels = array(
-		'name'                => _x('Popup', 'Post Type General Name'),
-		'singular_name'       => _x('Popup', 'Post Type Singular Name'),
-		'menu_name'           => __('Popups'),
-		'parent_item_colon'   => __('Parent Type'),
-		'all_items'           => __('All Popups'),
+		'name'                => _x('Pop Up', 'Post Type General Name'),
+		'singular_name'       => _x('Pop Up', 'Post Type Singular Name'),
+		'menu_name'           => __('Pop Ups'),
+		'parent_item_colon'   => __('Parent Pop Up'),
+		'all_items'           => __('All Pop Ups'),
 		'view_item'           => __('View Popup'),
 		'add_new_item'        => __('Add New Popup'),
 		'add_new'             => __('Add New'),
