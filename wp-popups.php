@@ -63,7 +63,7 @@ class wpPopups {
 	 * @since  1.0.0
 	 */
     public static function registerHTML() {
-        //require_once('wp-popups-html.php');
+        require_once('wp-popups-html.php');
     }
 
     /**
