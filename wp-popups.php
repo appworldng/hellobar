@@ -26,9 +26,10 @@ class wpPopups {
 	 * @since  1.0.0
 	 */
     public function __construct() {
-        add_action('admin_menu', array(get_called_class(), 'registerMenu'));
-        self::registerPopupType();
-    }
+		add_action('wp_enqueue_scripts', array(get_called_class(), 'registerScripts'));
+		add_action('get_footer', array($this, 'popup'));
+		self::registerPopupType();
+	}
 
     /**
 	 * Defines Custom Post Type declaration...
@@ -37,33 +38,40 @@ class wpPopups {
 	 * @return  void
 	 */
 	private static function registerPopupType() {	
-        	add_action('init', array(get_called_class(), 'postTypeInit'));
+        add_action('init', array(get_called_class(), 'postTypeInit'));
 	}
-
-    /**
-	 * Register Menu Method
+	
+	/**
+	 * Popup Method
 	 *
      * @access public 
 	 * @since  1.0.0
 	 */
-    public static function registerMenu() {
-        add_menu_page(
-            'Pop Ups', 
-            'Pop Ups', 
-            'manage_options', 
-            'Pop Ups', 
-            array(get_called_class(), 'registerHTML')
-        );
+    public static function popup() {
+		$args = array(
+			'numberOfPost' 	=> 1,
+			'orderby'		=> 'rand',
+			'post_type'		=> 'popup'
+		);
+		$popups = get_posts($args);
+		foreach($popups as $popup):
+			$image = wp_get_attachment_image_src(get_post_thumbnail_id($popup->ID), 'full');
+			$image = $image[0];
+			require_once('wp-popups-html.php');
+		endforeach;
     }
 
     /**
-	 * Register HTML Method
+	 * Register Scripts Method
 	 *
-     * @access public
+     * @access public 
 	 * @since  1.0.0
 	 */
-    public static function registerHTML() {
-        //require_once('wp-popups-html.php');
+    public static function registerScripts() {
+		wp_register_style('wp-popups-css', plugin_dir_url(__FILE__).'css/wp-popups.css');
+		wp_enqueue_style('wp-popups-css');
+		wp_register_script('wp-popups-js', plugin_dir_url(__FILE__).'js/wp-popups.js', array('jquery'), '1', true);
+		wp_enqueue_script('wp-popups-js');
     }
 
     /**
@@ -85,43 +93,42 @@ class wpPopups {
 	 * @since  1.0.0
 	 */
     public static function postTypeInit() {
-        $labels = array(
-		'name'                => _x('Pop Up', 'Post Type General Name'),
-		'singular_name'       => _x('Pop Up', 'Post Type Singular Name'),
-		'menu_name'           => __('Pop Ups'),
-		'parent_item_colon'   => __('Parent Pop Up'),
-		'all_items'           => __('All Pop Ups'),
-		'view_item'           => __('View Popup'),
-		'add_new_item'        => __('Add New Popup'),
-		'add_new'             => __('Add New'),
-		'edit_item'           => __('Edit Popup'),
-		'update_item'         => __('Update Popup'),
-		'search_items'        => __('Search Popup'),
-		'not_found'           => __('Not Found'),
-		'not_found_in_trash'  => __('Not found in Trash')
-	);
-	$args = array(
-		'label'               => __('Popup'),
-		'description'         => __('News & Reviews'),
-		'labels'              => $labels,
-		'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
-		'hierarchical'        => true,
-		'public'              => true,
-		'show_ui'             => true,
-		'show_in_menu'        => true,
-		'show_in_nav_menus'   => true,
-		'show_in_admin_bar'   => true,
-		'menu_position'       => 30,
-	    'menu_icon'           => 'dashicons-admin-tools',
-		'can_export'          => true,
-		'has_archive'         => true,
-		'exclude_from_search' => false,
-		'publicly_queryable'  => true,
-		'capability_type'     => 'page'
-	);
-	register_post_type('popup', $args);
-    }
-	
+		$labels = array(
+			'name'                => _x('Pop Up', 'Post Type General Name'),
+			'singular_name'       => _x('Pop Up', 'Post Type Singular Name'),
+			'menu_name'           => __('Pop Ups'),
+			'parent_item_colon'   => __('Parent Pop Up'),
+			'all_items'           => __('All Pop Ups'),
+			'view_item'           => __('View Popup'),
+			'add_new_item'        => __('Add New Popup'),
+			'add_new'             => __('Add New'),
+			'edit_item'           => __('Edit Popup'),
+			'update_item'         => __('Update Popup'),
+			'search_items'        => __('Search Popup'),
+			'not_found'           => __('Not Found'),
+			'not_found_in_trash'  => __('Not found in Trash')
+		);
+		$args = array(
+			'label'               => __('Popup'),
+			'description'         => __('News & Reviews'),
+			'labels'              => $labels,
+			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
+			'hierarchical'        => true,
+			'public'              => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_nav_menus'   => true,
+			'show_in_admin_bar'   => true,
+			'menu_position'       => 30,
+			'menu_icon'           => 'dashicons-admin-tools',
+			'can_export'          => true,
+			'has_archive'         => true,
+			'exclude_from_search' => false,
+			'publicly_queryable'  => true,
+			'capability_type'     => 'page'
+		);
+		register_post_type('popup', $args);
+    }	
 }
 
 ?>
