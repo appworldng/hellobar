@@ -1,0 +1,22 @@
+.hellobar-top {
+  padding: 1.5em;
+  background: #123;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+}
+
+.hellobar-bottom {
+  padding: 1.5em;
+  background: #123;
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+}
+
+.hellobar-top span, .hellobar-bottom span {
+  margin: 0;
+  font-weight: 700;
+  color: #fff;
+  font-size: 18px;
+}
