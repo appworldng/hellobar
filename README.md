@@ -1,2 +1,2 @@
-# wp-popups
-A simple WordPress plugin to enable site owners display popups on their website's home page.
+# hellobar
+A simple WordPress plugin to help you display a hello bar on every page of your site.
